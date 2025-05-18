@@ -6727,6 +6727,7 @@ public final class Settings {
         public static final String STATUS_BAR_CUSTOM_HEADER_HEIGHT = "status_bar_custom_header_height";
 
         /**
+<<<<<<< HEAD
          * Show or hide clock
          * 0 - hide
          * 1 - show (default)
@@ -6815,6 +6816,28 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_NOTIFICATION_TICKER = "status_bar_notification_ticker";
+
+        /**
+         * Ramping ringer total duration in seconds
+         * @hide
+         */
+        @Readable
+        public static final String RAMPING_RINGER_DURATION = "ramping_ringer_duration";
+
+        /**
+         * Ramping ringer starting volume in decimal percentage
+         * @hide
+         */
+        @Readable
+        public static final String RAMPING_RINGER_START_VOLUME = "ramping_ringer_start_volume";
+
+        /**
+         * Whther to immediately start ramping volume
+         * instead of waiting for half of {@link RAMPING_RINGER_DURATION}
+         * @hide
+         */
+        @Readable
+        public static final String RAMPING_RINGER_NO_SILENCE = "ramping_ringer_no_silence";
 
         /**
          * IMPORTANT: If you add a new public settings you also have to add it to
