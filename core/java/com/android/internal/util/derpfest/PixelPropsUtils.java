@@ -53,10 +53,15 @@ public final class PixelPropsUtils {
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
     private static final String DATA_FILE = "gms_certified_props.json";
 
+    private static final String PACKAGE_GMS = "com.google.android.gms";
+    private static final String PROCESS_GMS_UNSTABLE = PACKAGE_GMS + ".unstable";
+    private static final String PACKAGE_VENDING = "com.android.vending";
+
     private static final String SPOOF_PIXEL_PI = "persist.sys.pixelprops.pi";
     private static final String SPOOF_PIXEL_GAMES = "persist.sys.pixelprops.games";
     private static final String SPOOF_PIXEL_GPHOTOS = "persist.sys.pixelprops.gphotos";
     private static final String SPOOF_PIXEL_NETFLIX = "persist.sys.pixelprops.netflix";
+    private static final String SPOOF_VENDING_SDK32_ENABLED = "persist.sys.spoof.vending_sdk32";
 
     private static final Map<String, Object> propsToChangeGeneric;
     private static final Map<String, Object> propsToChangePixel9ProXL;
@@ -182,6 +187,7 @@ public final class PixelPropsUtils {
             "com.proximabeta.mf.uamo"
     };
 
+    private static volatile boolean sIsGms = false;
     private static volatile boolean sIsFinsky = false;
     private static volatile List<String> sCertifiedProps = new ArrayList<>();
 
@@ -247,6 +253,7 @@ public final class PixelPropsUtils {
 
     public static void setProps(Context context) {
         final String packageName = context.getPackageName();
+        final String processName = Application.getProcessName();
         if (packageName == null || packageName.isEmpty()) {
             return;
         }
@@ -257,6 +264,11 @@ public final class PixelPropsUtils {
 
             Map<String, Object> propsToChange = new HashMap<>();
 
+            sIsFinsky = packageName.equals("com.android.vending");
+            sIsGms = packageName.equals(PACKAGE_GMS) && processName.equals(PROCESS_GMS_UNSTABLE);
+
+            spoofAttestationToLegacy();
+
             if (packageName.equals("com.google.android.apps.photos")) {
                 if (SystemProperties.getBoolean(SPOOF_PIXEL_GPHOTOS, true)) {
                     propsToChange.putAll(propsToChangePixelXL);
@@ -265,16 +277,11 @@ public final class PixelPropsUtils {
                         !SystemProperties.getBoolean(SPOOF_PIXEL_NETFLIX, false)) {
                     if (DEBUG) Log.d(TAG, "Netflix spoofing disabled by system prop");
                     return;
-            } else if (packageName.equals("com.android.vending")) {
-                sIsFinsky = true;
-                return;
-            } else if (packageName.equals("com.google.android.gms")) {
-                final String processName = Application.getProcessName().toLowerCase();
-                if (processName.contains("unstable")) {
-                    spoofBuildGms(context);
+            }
+
+            if (sIsGms) {
+                spoofBuildGms(context);
                     return;
-                }
-                return;
             } else if (packageName.equals("com.google.android.settings.intelligence")) {
                 setPropValue("FINGERPRINT", Build.VERSION.INCREMENTAL);
                 return;
@@ -368,6 +375,15 @@ public final class PixelPropsUtils {
         Configuration config = context.getResources().getConfiguration();
         boolean isTablet = (config.smallestScreenWidthDp >= 600);
         return isTablet;
+    }
+
+    private static void spoofAttestationToLegacy() {
+        if (!SystemProperties.getBoolean(SPOOF_VENDING_SDK32_ENABLED, false))
+            return;
+        if (sIsGms || sIsFinsky) {
+            setPropValue("VERSION.RELEASE", "12");
+            setPropValue("VERSION.SDK_INT", "32");
+        }
     }
 
     private static void setPropValue(String key, Object value) {
