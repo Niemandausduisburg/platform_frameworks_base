@@ -213,6 +213,10 @@ public class OnGoingActionProgressController implements NotificationListener.Not
     private void expandCompactView() {
         mIsExpanded = true;
         
+        // Cancel any ongoing animations
+        mCompactRootView.animate().cancel();
+        mProgressRootView.animate().cancel();
+        
         // Animate the transition
         mCompactRootView.animate()
             .alpha(0f)
@@ -232,6 +236,10 @@ public class OnGoingActionProgressController implements NotificationListener.Not
             synchronized (mLock) {
                 if (mIsCompactModeEnabled && mIsExpanded) {
                     mIsExpanded = false;
+                    // Cancel any ongoing animations
+                    mCompactRootView.animate().cancel();
+                    mProgressRootView.animate().cancel();
+                    
                     // Animate the collapse
                     mProgressRootView.animate()
                         .alpha(0f)
@@ -388,17 +396,17 @@ public class OnGoingActionProgressController implements NotificationListener.Not
         long totalDuration = mMediaSessionHelper.getTotalDuration();
         long currentProgress = mMediaSessionHelper.getMediaControllerPlaybackState() != null
                 ? mMediaSessionHelper.getMediaControllerPlaybackState().getPosition() : 0;
-                
+            
         // Update the standard progress bar if visible
         if (mProgressRootView.getVisibility() == View.VISIBLE && mProgressBar != null && totalDuration > 0) {
             mProgressBar.setMax((int) totalDuration);
-            mProgressBar.setProgress((int) currentProgress);
+            mProgressBar.setProgress((int) currentProgress, false); // Don't animate progress updates
         }
         
         // Also update the circular progress bar for compact mode
         if (mCompactRootView.getVisibility() == View.VISIBLE && mCircularProgressBar != null && totalDuration > 0) {
             mCircularProgressBar.setMax((int) totalDuration);
-            mCircularProgressBar.setProgress((int) currentProgress);
+            mCircularProgressBar.setProgress((int) currentProgress, false); // Don't animate progress updates
         }
     }
 
@@ -449,7 +457,7 @@ public class OnGoingActionProgressController implements NotificationListener.Not
                 
         if (totalDuration > 0 && mCircularProgressBar != null) {
             mCircularProgressBar.setMax((int) totalDuration);
-            mCircularProgressBar.setProgress((int) currentProgress);
+            mCircularProgressBar.setProgress((int) currentProgress, false); // Don't animate progress updates
         }
 
         Drawable mediaAppIcon = mMediaSessionHelper.getMediaAppIcon();
@@ -494,7 +502,7 @@ public class OnGoingActionProgressController implements NotificationListener.Not
 
         if (mProgressBar != null) {
             mProgressBar.setMax(mCurrentProgressMax);
-            mProgressBar.setProgress(mCurrentProgress);
+            mProgressBar.setProgress(mCurrentProgress, false); // Don't animate progress updates
         }
 
         if (mTrackedPackageName != null) {
@@ -523,7 +531,7 @@ public class OnGoingActionProgressController implements NotificationListener.Not
 
         if (mCircularProgressBar != null) {
             mCircularProgressBar.setMax(mCurrentProgressMax);
-            mCircularProgressBar.setProgress(mCurrentProgress);
+            mCircularProgressBar.setProgress(mCurrentProgress, false); // Don't animate progress updates
         }
 
         if (mTrackedPackageName != null) {
