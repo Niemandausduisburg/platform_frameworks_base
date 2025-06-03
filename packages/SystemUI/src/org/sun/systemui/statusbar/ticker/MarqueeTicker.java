@@ -7,7 +7,6 @@ package org.sun.systemui.statusbar.ticker;
 
 import static android.graphics.PorterDuff.Mode.SRC_IN;
 
-import static org.sun.os.DebugConstants.DEBUG_TICKER;
 import static org.sun.view.DisplayResolutionManager.FHD_WIDTH;
 
 import android.content.Context;
