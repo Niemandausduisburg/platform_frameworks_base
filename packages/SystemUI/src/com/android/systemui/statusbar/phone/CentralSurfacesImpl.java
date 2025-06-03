@@ -405,6 +405,7 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces,
     private final NotificationShadeWindowController mNotificationShadeWindowController;
     private final StatusBarInitializer mStatusBarInitializer;
     private final StatusBarWindowControllerStore mStatusBarWindowControllerStore;
+    private final StatusBarWindowController mStatusBarWindowController;
     private final StatusBarModeRepositoryStore mStatusBarModeRepository;
     private final KeyguardUpdateMonitor mKeyguardUpdateMonitor;
     @VisibleForTesting

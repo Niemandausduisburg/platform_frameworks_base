@@ -13,6 +13,7 @@ import android.app.Notification;
 import android.content.Context;
 import android.service.notification.StatusBarNotification;
 import android.view.ViewStub;
+import android.view.View;
 
 import com.android.systemui.demomode.DemoModeController;
 import com.android.systemui.res.R;
@@ -228,6 +229,13 @@ class CentralSurfacesImplExt {
         if (mSwitcherView != null) {
             visible &= !(mKeyguardStateController.isShowing() && mKeyguardStateController.isOccluded());
             mSwitcherView.updateTickerViewVisibility(visible);
+        }
+    }
+
+    public void updateResources() {
+        // Update resources as needed
+        if (mSwitcherView != null) {
+            mSwitcherView.requestLayout();
         }
     }
 }

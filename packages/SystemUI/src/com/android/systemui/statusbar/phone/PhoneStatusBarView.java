@@ -28,6 +28,7 @@ import android.os.RemoteException;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.Display;
 import android.view.DisplayCutout;
 import android.view.IWindowManager;
 import android.view.MotionEvent;
@@ -60,6 +61,8 @@ import com.android.systemui.statusbar.window.StatusBarWindowControllerStore;
 import com.android.systemui.user.ui.binder.StatusBarUserChipViewBinder;
 import com.android.systemui.user.ui.viewmodel.StatusBarUserChipViewModel;
 import com.android.systemui.util.leak.RotationUtils;
+import org.sun.systemui.statusbar.ticker.MarqueeTicker;
+import org.sun.systemui.statusbar.ticker.MarqueeTickerView;
 
 import java.util.Objects;
 
@@ -74,6 +77,8 @@ public class PhoneStatusBarView extends FrameLayout implements Callbacks {
     private View mCutoutSpace;
     @Nullable
     private View mTickerView;
+    @Nullable
+    private View mTickerContainer;
     @Nullable
     private DisplayCutout mDisplayCutout;
     @Nullable
@@ -143,7 +148,7 @@ public class PhoneStatusBarView extends FrameLayout implements Callbacks {
     private boolean hasNavigationBar() {
         try {
             IWindowManager windowManager = WindowManagerGlobal.getWindowManagerService();
-            return windowManager.hasNavigationBar(Display.DEFAULT_DISPLAY);
+            return windowManager.hasNavigationBar(Display.DEFAULT_DISPLAY_ID);
         } catch (RemoteException ex) { }
         return false;
     }
@@ -179,6 +184,7 @@ public class PhoneStatusBarView extends FrameLayout implements Callbacks {
         super.onFinishInflate();
         mCutoutSpace = findViewById(R.id.cutout_space_view);
         mStatusBarContents = (ViewGroup) findViewById(R.id.status_bar_contents);
+        mTickerContainer = findViewById(R.id.ticker_container);
 
         updateResources();
     }
