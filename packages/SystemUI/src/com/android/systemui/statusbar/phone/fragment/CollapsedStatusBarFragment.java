@@ -728,7 +728,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
             hideNotificationIconArea(animate && !hasOngoingActivity);
             hideLyricsTicker(animate);
             animateHide(mClockView, animate, false);
-        } else if (advertTickerViewShow) {
+        } else if (mLastAdvertTickerViewShow) {
             showLyricsTicker(animate);
         } else {
             showNotificationIconArea(animate);
@@ -1072,7 +1072,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
                     UserHandle.USER_CURRENT);
             if (style == STYLE_CLOCK_CENTER) {
                 final boolean hasCenteredCutout = getContext().getResources().getBoolean(
-                        com.android.internal.R.bool.config_hasCenteredCutout);
+                        R.bool.config_hasCenteredCutout);
                 if (hasCenteredCutout) {
                     style = STYLE_CLOCK_LEFT;
                 }
