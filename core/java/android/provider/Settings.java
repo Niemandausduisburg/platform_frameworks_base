@@ -6727,7 +6727,6 @@ public final class Settings {
         public static final String STATUS_BAR_CUSTOM_HEADER_HEIGHT = "status_bar_custom_header_height";
 
         /**
-<<<<<<< HEAD
          * Show or hide clock
          * 0 - hide
          * 1 - show (default)

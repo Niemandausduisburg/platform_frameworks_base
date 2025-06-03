@@ -196,13 +196,13 @@ public class Clock extends TextView implements
                     Settings.System.STATUSBAR_CLOCK_DATE_POSITION),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_CLOCK_AUTO_HIDE),
+                    Settings.System.STATUSBAR_CLOCK_AUTO_HIDE),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_CLOCK_AUTO_HIDE_HDURATION),
+                    Settings.System.STATUSBAR_CLOCK_AUTO_HIDE_HDURATION),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_CLOCK_AUTO_HIDE_SDURATION),
+                    Settings.System.STATUSBAR_CLOCK_AUTO_HIDE_SDURATION),
                     false, this, UserHandle.USER_ALL);
             updateSettings();
         }
