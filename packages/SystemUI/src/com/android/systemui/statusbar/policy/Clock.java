@@ -667,7 +667,7 @@ public class Clock extends TextView implements
                     mCurrentUserId);
             if (style == STYLE_CLOCK_CENTER) {
                 final boolean hasCenteredCutout = mContext.getResources().getBoolean(
-                        com.android.internal.R.bool.config_hasCenteredCutout);
+                        R.bool.config_hasCenteredCutout);
                 if (hasCenteredCutout) {
                     style = STYLE_CLOCK_LEFT;
                 }
